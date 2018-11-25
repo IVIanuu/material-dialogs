@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2018 Manuel Wrage
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<com.ivianuu.materialdialogs.internal.DialogContainer xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/md_dialog_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/md_dialog_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#88000000" />
+
+    <View
+        android:id="@+id/md_touch_outside"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.ivianuu.materialdialogs.internal.DialogLayout
+        android:id="@+id/md_dialog_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:focusable="true"
+        android:clickable="true"
+        app:cardElevation="8dp">
+
+        <com.ivianuu.materialdialogs.internal.DialogTitleLayout
+            android:id="@+id/md_title_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/md_icon_title"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:scaleType="fitCenter"
+                android:visibility="gone"
+                tools:ignore="ContentDescription" />
+
+            <com.ivianuu.materialdialogs.internal.RtlTextView
+                android:id="@+id/md_text_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="?android:textColorPrimary"
+                android:textSize="@dimen/md_title_textsize"
+                android:fontFamily="sans-serif-medium"
+                android:visibility="gone"
+                tools:text="Use Google's location service?" />
+
+        </com.ivianuu.materialdialogs.internal.DialogTitleLayout>
+
+        <com.ivianuu.materialdialogs.internal.DialogContentLayout
+            android:id="@+id/md_content_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.ivianuu.materialdialogs.internal.DialogActionButtonLayout
+            android:id="@+id/md_button_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/md_checkbox_prompt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start|center_vertical"
+                android:visibility="gone" />
+
+
+            <com.ivianuu.materialdialogs.internal.DialogActionButton
+                android:id="@+id/md_button_positive"
+
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="@dimen/md_action_button_textsize"
+                android:singleLine="true"
+                android:gravity="center"
+                android:minWidth="@dimen/md_action_button_min_width"
+                android:paddingStart="@dimen/md_action_button_padding_horizontal"
+                android:paddingEnd="@dimen/md_action_button_padding_horizontal"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+
+                tools:text="Agree" />
+
+            <com.ivianuu.materialdialogs.internal.DialogActionButton
+                android:id="@+id/md_button_negative"
+
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="@dimen/md_action_button_textsize"
+                android:singleLine="true"
+                android:gravity="center"
+                android:minWidth="@dimen/md_action_button_min_width"
+                android:paddingStart="@dimen/md_action_button_padding_horizontal"
+                android:paddingEnd="@dimen/md_action_button_padding_horizontal"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+
+                tools:text="Disagree" />
+
+            <com.ivianuu.materialdialogs.internal.DialogActionButton
+                android:id="@+id/md_button_neutral"
+
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="@dimen/md_action_button_textsize"
+                android:singleLine="true"
+                android:gravity="center"
+                android:minWidth="@dimen/md_action_button_min_width"
+                android:paddingStart="@dimen/md_action_button_padding_horizontal"
+                android:paddingEnd="@dimen/md_action_button_padding_horizontal"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+
+                tools:text="Idk"/>
+        </com.ivianuu.materialdialogs.internal.DialogActionButtonLayout>
+
+    </com.ivianuu.materialdialogs.internal.DialogLayout>
+
+</com.ivianuu.materialdialogs.internal.DialogContainer>

@@ -1,0 +1,138 @@
+/*
+ * Copyright 2018 Manuel Wrage
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+@file:Suppress("unused")
+
+package com.ivianuu.materialdialogs.list
+
+import com.ivianuu.materialdialogs.DialogButton.POSITIVE
+import com.ivianuu.materialdialogs.MaterialDialog
+import com.ivianuu.materialdialogs.action.setActionButtonEnabled
+import com.ivianuu.materialdialogs.assertOneSet
+import com.ivianuu.materialdialogs.internal.DialogAdapter
+import com.ivianuu.materialdialogs.internal.MultiChoiceDialogAdapter
+import com.ivianuu.materialdialogs.util.getStringArray
+
+/**
+ */
+fun MaterialDialog.listItemsMultiChoice(
+    res: Int? = null,
+    items: List<String>? = null,
+    disabledIndices: IntArray? = null,
+    initialSelection: IntArray = IntArray(0),
+    waitForPositiveButton: Boolean = true,
+    allowEmptySelection: Boolean = false,
+    selection: MultiChoiceListener = null
+) = apply {
+    val array = items ?: getStringArray(res)?.toList() ?: return this
+    val adapter = getListAdapter()
+
+    if (adapter is MultiChoiceDialogAdapter) {
+        adapter.replaceItems(array)
+        adapter.setListener(selection)
+        if (disabledIndices != null) {
+            adapter.disableItems(disabledIndices)
+        }
+        return this
+    }
+
+    assertOneSet("listItemsMultiChoice", items, res)
+    setActionButtonEnabled(POSITIVE, allowEmptySelection || initialSelection.isNotEmpty())
+
+    customListAdapter(
+        MultiChoiceDialogAdapter(
+            dialog = this,
+            items = array,
+            disabledItems = disabledIndices,
+            initialSelection = initialSelection,
+            waitForActionButton = waitForPositiveButton,
+            allowEmptySelection = allowEmptySelection,
+            selection = selection
+        )
+    )
+}
+
+/** Checks a set of multiple choice list items. */
+fun MaterialDialog.checkItems(indices: IntArray) {
+    val adapter = getListAdapter()
+    if (adapter is DialogAdapter<*, *>) {
+        adapter.checkItems(indices)
+        return
+    }
+    throw UnsupportedOperationException(
+        "Can't check items on adapter: ${adapter?.javaClass?.name ?: "null"}"
+    )
+}
+
+/** Unchecks a set of multiple choice list items. */
+fun MaterialDialog.uncheckItems(indices: IntArray) {
+    val adapter = getListAdapter()
+    if (adapter is DialogAdapter<*, *>) {
+        adapter.uncheckItems(indices)
+        return
+    }
+    throw UnsupportedOperationException(
+        "Can't uncheck items on adapter: ${adapter?.javaClass?.name ?: "null"}"
+    )
+}
+
+/** Toggles the checked state of a set of multiple choice list items. */
+fun MaterialDialog.toggleItemsChecked(indices: IntArray) {
+    val adapter = getListAdapter()
+    if (adapter is DialogAdapter<*, *>) {
+        adapter.toggleItems(indices)
+        return
+    }
+    throw UnsupportedOperationException(
+        "Can't toggle checked items on adapter: ${adapter?.javaClass?.name ?: "null"}"
+    )
+}
+
+/** Checks all multiple choice list items. */
+fun MaterialDialog.checkAllItems() {
+    val adapter = getListAdapter()
+    if (adapter is DialogAdapter<*, *>) {
+        adapter.checkAllItems()
+        return
+    }
+    throw UnsupportedOperationException(
+        "Can't check all items on adapter: ${adapter?.javaClass?.name ?: "null"}"
+    )
+}
+
+/** Unchecks all single or multiple choice list items. */
+fun MaterialDialog.uncheckAllItems() {
+    val adapter = getListAdapter()
+    if (adapter is DialogAdapter<*, *>) {
+        adapter.uncheckAllItems()
+        return
+    }
+    throw UnsupportedOperationException(
+        "Can't uncheck all items on adapter: ${adapter?.javaClass?.name ?: "null"}"
+    )
+}
+
+/** Toggles the checked state of all multiple choice list items. */
+fun MaterialDialog.toggleAllItemsChecked() {
+    val adapter = getListAdapter()
+    if (adapter is DialogAdapter<*, *>) {
+        adapter.toggleAllChecked()
+        return
+    }
+    throw UnsupportedOperationException(
+        "Can't uncheck all items on adapter: ${adapter?.javaClass?.name ?: "null"}"
+    )
+}

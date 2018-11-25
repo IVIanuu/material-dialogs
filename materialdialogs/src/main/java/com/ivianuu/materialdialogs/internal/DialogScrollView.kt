@@ -1,0 +1,72 @@
+/*
+ * Copyright 2018 Manuel Wrage
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.ivianuu.materialdialogs.internal
+
+import android.content.Context
+import android.util.AttributeSet
+import android.widget.ScrollView
+import com.ivianuu.materialdialogs.util.waitForLayout
+
+internal class DialogScrollView(
+    context: Context?,
+    attrs: AttributeSet? = null
+) : ScrollView(context, attrs) {
+
+    var rootView: DialogLayout? = null
+
+    private var isScrollable = false
+        get() = getChildAt(0).measuredHeight > height
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        waitForLayout {
+            invalidateDividers()
+            invalidateOverScroll()
+        }
+    }
+
+    override fun onScrollChanged(
+        left: Int,
+        top: Int,
+        oldl: Int,
+        oldt: Int
+    ) {
+        super.onScrollChanged(left, top, oldl, oldt)
+        invalidateDividers()
+    }
+
+    private fun invalidateDividers() {
+        if (childCount == 0 || measuredHeight == 0 || !isScrollable) {
+            rootView?.invalidateDividers(false, false)
+            return
+        }
+        val view = getChildAt(childCount - 1)
+        val diff = view.bottom - (measuredHeight + scrollY)
+        rootView?.invalidateDividers(
+            scrollY > 0,
+            diff > 0
+        )
+    }
+
+    private fun invalidateOverScroll() {
+        overScrollMode = if (childCount == 0 || measuredHeight == 0 || !isScrollable) {
+            OVER_SCROLL_NEVER
+        } else {
+            OVER_SCROLL_IF_CONTENT_SCROLLS
+        }
+    }
+}
