@@ -107,6 +107,13 @@ class MaterialDialog internal constructor(
     var animationsEnabled = true
         private set
 
+    var dimBackground = true
+        private set(value) {
+            field = value
+            container.dialogDim.visibility =
+                    if (value) View.VISIBLE else View.INVISIBLE
+        }
+
     private var addedInContainer = false
 
     val view: View get() = container
@@ -303,6 +310,8 @@ class MaterialDialog internal constructor(
     fun cancelOnTouchOutside(cancelable: Boolean) = apply { cancelOnTouchOutside = cancelable }
 
     fun animationsEnabled(enabled: Boolean) = apply { animationsEnabled = enabled }
+
+    fun dimBackground(enabled: Boolean) = apply { dimBackground = enabled }
 
     fun showInContainer(viewGroup: ViewGroup) = apply {
         if (isDismissed) return@apply
