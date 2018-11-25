@@ -83,7 +83,7 @@ internal class SingleChoiceDialogAdapter(
         } else {
             // Don't wait for action button, call listener and dismiss if auto dismiss is applicable
             this.selection?.invoke(dialog, index, this.items[index])
-            if (dialog.autoDismissEnabled && !dialog.hasActionButtons()) {
+            if (dialog.autoDismissEnabled) {
                 dialog.dismiss()
             }
         }

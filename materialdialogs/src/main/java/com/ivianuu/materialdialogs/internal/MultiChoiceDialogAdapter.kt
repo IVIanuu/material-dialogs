@@ -107,7 +107,7 @@ internal class MultiChoiceDialogAdapter(
             // Don't wait for action button, call listener and dismiss if auto dismiss is applicable
             val selectedItems = this.items.pullIndices(this.currentSelection)
             this.selection?.invoke(dialog, this.currentSelection, selectedItems)
-            if (dialog.autoDismissEnabled && !dialog.hasActionButtons()) {
+            if (dialog.autoDismissEnabled) {
                 dialog.dismiss()
             }
         }
