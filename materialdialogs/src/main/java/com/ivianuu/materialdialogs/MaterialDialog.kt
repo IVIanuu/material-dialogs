@@ -104,6 +104,9 @@ class MaterialDialog internal constructor(
     var isCanceled = false
         private set
 
+    var animationsEnabled = true
+        private set
+
     private var addedInContainer = false
 
     val view: View get() = container
@@ -299,21 +302,25 @@ class MaterialDialog internal constructor(
     /** A fluent version of [setCanceledOnTouchOutside]. */
     fun cancelOnTouchOutside(cancelable: Boolean) = apply { cancelOnTouchOutside = cancelable }
 
+    fun animationsEnabled(enabled: Boolean) = apply { animationsEnabled = enabled }
+
     fun showInContainer(viewGroup: ViewGroup) = apply {
         if (isDismissed) return@apply
         viewGroup.addView(container)
         addedInContainer = true
 
-        OneShotPreDrawListener.add(container) {
-            if (isDismissed) return@add
-            val animator = AnimatorSet()
-            animator.play(
-                ObjectAnimator.ofFloat(container, View.ALPHA, 0f, 1f)
-                    .setDuration(150)
-            )
+        if (animationsEnabled) {
+            OneShotPreDrawListener.add(container) {
+                if (isDismissed) return@add
+                val animator = AnimatorSet()
+                animator.play(
+                    ObjectAnimator.ofFloat(container, View.ALPHA, 0f, 1f)
+                        .setDuration(150)
+                )
 
-            currentAnimator = animator
-            animator.start()
+                currentAnimator = animator
+                animator.start()
+            }
         }
     }
 
@@ -325,26 +332,30 @@ class MaterialDialog internal constructor(
         hideKeyboard()
 
         if (addedInContainer) {
-            currentAnimator?.cancel()
-            val animator = AnimatorSet()
-            animator.play(
-                ObjectAnimator.ofFloat(container, View.ALPHA, view.alpha, 0f)
-                    .setDuration(150)
-            )
+            if (animationsEnabled) {
+                currentAnimator?.cancel()
+                val animator = AnimatorSet()
+                animator.play(
+                    ObjectAnimator.ofFloat(container, View.ALPHA, view.alpha, 0f)
+                        .setDuration(150)
+                )
 
-            animator.addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationCancel(animation: Animator?) {
-                    super.onAnimationCancel(animation)
-                    (container.parent as? ViewGroup)?.removeView(container)
-                }
+                animator.addListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationCancel(animation: Animator?) {
+                        super.onAnimationCancel(animation)
+                        (container.parent as? ViewGroup)?.removeView(container)
+                    }
 
-                override fun onAnimationEnd(animation: Animator?) {
-                    super.onAnimationEnd(animation)
-                    (container.parent as? ViewGroup)?.removeView(container)
-                }
-            })
+                    override fun onAnimationEnd(animation: Animator?) {
+                        super.onAnimationEnd(animation)
+                        (container.parent as? ViewGroup)?.removeView(container)
+                    }
+                })
 
-            animator.start()
+                animator.start()
+            } else {
+                (container.parent as? ViewGroup)?.removeView(container)
+            }
         }
     }
 
