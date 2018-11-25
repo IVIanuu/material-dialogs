@@ -31,72 +31,72 @@ import com.ivianuu.materialdialogs.util.MDUtil.dimenPx
 
 
 internal class ColorCircleView(
-  context: Context,
-  attrs: AttributeSet? = null
+    context: Context,
+    attrs: AttributeSet? = null
 ) : View(context, attrs) {
 
-  private val strokePaint = Paint()
-  private val fillPaint = Paint()
+    private val strokePaint = Paint()
+    private val fillPaint = Paint()
 
-  private val borderWidth = dimenPx(R.dimen.color_circle_view_border)
+    private val borderWidth = dimenPx(R.dimen.color_circle_view_border)
 
-  private var transparentGrid: Drawable? = null
+    private var transparentGrid: Drawable? = null
 
-  init {
-    setWillNotDraw(false)
-    strokePaint.style = STROKE
-    strokePaint.isAntiAlias = true
-    strokePaint.color = Color.BLACK
-    strokePaint.strokeWidth = borderWidth.toFloat()
-    fillPaint.style = FILL
-    fillPaint.isAntiAlias = true
-    fillPaint.color = Color.DKGRAY
-  }
-
-  var color: Int = Color.BLACK
-    set(value) {
-      field = value
-      fillPaint.color = value
-      invalidate()
-    }
-  var border: Int = Color.DKGRAY
-    set(value) {
-      field = value
-      strokePaint.color = value
-      invalidate()
+    init {
+        setWillNotDraw(false)
+        strokePaint.style = STROKE
+        strokePaint.isAntiAlias = true
+        strokePaint.color = Color.BLACK
+        strokePaint.strokeWidth = borderWidth.toFloat()
+        fillPaint.style = FILL
+        fillPaint.isAntiAlias = true
+        fillPaint.color = Color.DKGRAY
     }
 
-  override fun onMeasure(
-    widthMeasureSpec: Int,
-    heightMeasureSpec: Int
-  ) = super.onMeasure(widthMeasureSpec, widthMeasureSpec)
+    var color: Int = Color.BLACK
+        set(value) {
+            field = value
+            fillPaint.color = value
+            invalidate()
+        }
+    var border: Int = Color.DKGRAY
+        set(value) {
+            field = value
+            strokePaint.color = value
+            invalidate()
+        }
 
-  override fun onDraw(canvas: Canvas) {
-    super.onDraw(canvas)
-    if (color == TRANSPARENT) {
-      if (transparentGrid == null) {
-        transparentGrid = getDrawable(context, R.drawable.transparentgrid)
-      }
-      transparentGrid?.setBounds(0, 0, measuredWidth, measuredHeight)
-      transparentGrid?.draw(canvas)
-    } else {
-      canvas.drawCircle(
-          measuredWidth / 2f,
-          measuredHeight / 2f,
-          (measuredWidth / 2f) - borderWidth,
-          fillPaint
-      )
+    override fun onMeasure(
+        widthMeasureSpec: Int,
+        heightMeasureSpec: Int
+    ) = super.onMeasure(widthMeasureSpec, widthMeasureSpec)
+
+    override fun onDraw(canvas: Canvas) {
+        super.onDraw(canvas)
+        if (color == TRANSPARENT) {
+            if (transparentGrid == null) {
+                transparentGrid = getDrawable(context, R.drawable.transparentgrid)
+            }
+            transparentGrid?.setBounds(0, 0, measuredWidth, measuredHeight)
+            transparentGrid?.draw(canvas)
+        } else {
+            canvas.drawCircle(
+                measuredWidth / 2f,
+                measuredHeight / 2f,
+                (measuredWidth / 2f) - borderWidth,
+                fillPaint
+            )
+        }
+        canvas.drawCircle(
+            measuredWidth / 2f,
+            measuredHeight / 2f,
+            (measuredWidth / 2f) - borderWidth,
+            strokePaint
+        )
     }
-    canvas.drawCircle(
-        measuredWidth / 2f,
-        measuredHeight / 2f,
-        (measuredWidth / 2f) - borderWidth,
-        strokePaint
-    )
-  }
 
-  override fun onDetachedFromWindow() {
-    super.onDetachedFromWindow()
-    transparentGrid = null
-  }
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        transparentGrid = null
+    }
 }

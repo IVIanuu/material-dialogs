@@ -47,7 +47,7 @@ import com.ivianuu.materialdialogs.util.preShow
 import com.ivianuu.materialdialogs.util.setDefaults
 import com.ivianuu.materialdialogs.util.setWindowConstraints
 
-internal fun assertOneSet(
+fun assertOneSet(
     method: String,
     b: Any?,
     a: Int?

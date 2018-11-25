@@ -26,57 +26,57 @@ import android.widget.SeekBar
 import androidx.viewpager.widget.ViewPager
 
 internal fun <T : View> T.setVisibleOrGone(visible: Boolean) {
-  visibility = if (visible) VISIBLE else GONE
+    visibility = if (visible) VISIBLE else GONE
 }
 
 internal fun ViewPager.onPageSelected(selection: (Int) -> Unit) {
-  addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-    override fun onPageSelected(position: Int) = selection(position)
+    addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+        override fun onPageSelected(position: Int) = selection(position)
 
-    override fun onPageScrollStateChanged(state: Int) = Unit
+        override fun onPageScrollStateChanged(state: Int) = Unit
 
-    override fun onPageScrolled(
-      position: Int,
-      positionOffset: Float,
-      positionOffsetPixels: Int
-    ) = Unit
-  })
+        override fun onPageScrolled(
+            position: Int,
+            positionOffset: Float,
+            positionOffsetPixels: Int
+        ) = Unit
+    })
 }
 
 internal fun Array<SeekBar>.progressChanged(selection: (Int) -> Unit) {
-  val listener = object : SeekBar.OnSeekBarChangeListener {
-    override fun onProgressChanged(
-      p0: SeekBar?,
-      p1: Int,
-      p2: Boolean
-    ) = selection(p1)
+    val listener = object : SeekBar.OnSeekBarChangeListener {
+        override fun onProgressChanged(
+            p0: SeekBar?,
+            p1: Int,
+            p2: Boolean
+        ) = selection(p1)
 
-    override fun onStartTrackingTouch(p0: SeekBar?) = Unit
-    override fun onStopTrackingTouch(p0: SeekBar?) = Unit
-  }
-  for (bar in this) {
-    bar.setOnSeekBarChangeListener(listener)
-  }
+        override fun onStartTrackingTouch(p0: SeekBar?) = Unit
+        override fun onStopTrackingTouch(p0: SeekBar?) = Unit
+    }
+    for (bar in this) {
+        bar.setOnSeekBarChangeListener(listener)
+    }
 }
 
 internal fun View.changeHeight(height: Int) {
-  if (height == 0) {
-    visibility = INVISIBLE
-  }
-  val lp = layoutParams as MarginLayoutParams
-  lp.height = height
-  layoutParams = lp
+    if (height == 0) {
+        visibility = INVISIBLE
+    }
+    val lp = layoutParams as MarginLayoutParams
+    lp.height = height
+    layoutParams = lp
 }
 
 internal fun View.below(id: Int) {
-  val lp = layoutParams as RelativeLayout.LayoutParams
-  lp.addRule(RelativeLayout.BELOW, id)
-  layoutParams = lp
+    val lp = layoutParams as RelativeLayout.LayoutParams
+    lp.addRule(RelativeLayout.BELOW, id)
+    layoutParams = lp
 }
 
 internal fun View.clearTopMargin() {
-  val lp = this.layoutParams as MarginLayoutParams
-  lp.topMargin = 0
-  layoutParams = lp
-  parent.requestLayout()
+    val lp = this.layoutParams as MarginLayoutParams
+    lp.topMargin = 0
+    layoutParams = lp
+    parent.requestLayout()
 }

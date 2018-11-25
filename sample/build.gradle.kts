@@ -45,6 +45,8 @@ android {
 dependencies {
     implementation(Deps.androidxAppCompat)
     implementation(project(":materialdialogs"))
+    implementation(project(":materialdialogs-color"))
+    implementation(project(":materialdialogs-file"))
     implementation(project(":materialdialogs-fragment"))
     implementation(project(":materialdialogs-input"))
 }

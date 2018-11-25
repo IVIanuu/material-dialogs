@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.ivianuu.materialdialogs.MaterialDialog
+import com.ivianuu.materialdialogs.color.colorChooser
 import com.ivianuu.materialdialogs.list.listItems
 import com.ivianuu.materialdialogs.setupWithActivity
 import kotlinx.android.synthetic.main.activity_main.container
@@ -22,9 +23,27 @@ class MainActivity : AppCompatActivity() {
         */
            // list()
             //simple()
-            list()
+            color()
         }
     }
+
+    private fun color() {
+        MaterialDialog().showInContainer(container) {
+            debugListeners()
+            title(text = "Baum")
+            colorChooser(allowCustomArgb = true, showAlphaSelector = true)
+            positiveButton(text = "OK") {
+
+            }
+            negativeButton(text = "Cancel") {
+
+            }
+            neutralButton(text = "Neutral") {
+
+            }
+        }
+    }
+
 
     private fun list() {
         MaterialDialog().showInContainer(container) {
