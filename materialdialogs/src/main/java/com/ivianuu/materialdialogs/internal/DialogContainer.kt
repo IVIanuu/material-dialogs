@@ -28,6 +28,7 @@ internal class DialogContainer(
     attrs: AttributeSet? = null
 ) : FrameLayout(context, attrs) {
 
+    internal lateinit var dialogDim: View
     internal lateinit var dialog: MaterialDialog
     internal lateinit var dialogLayout: DialogLayout
 
@@ -36,6 +37,7 @@ internal class DialogContainer(
     override fun onFinishInflate() {
         super.onFinishInflate()
 
+        dialogDim = findViewById(R.id.md_dialog_dim)
         dialogLayout = findViewById(R.id.md_dialog_layout)
         touchOutside = findViewById(R.id.md_touch_outside)
 

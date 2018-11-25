@@ -18,6 +18,10 @@
 
 package com.ivianuu.materialdialogs
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
@@ -25,6 +29,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.OneShotPreDrawListener
 import com.ivianuu.materialdialogs.DialogButton.NEGATIVE
 import com.ivianuu.materialdialogs.DialogButton.NEUTRAL
 import com.ivianuu.materialdialogs.DialogButton.POSITIVE
@@ -116,6 +121,8 @@ class MaterialDialog internal constructor(
     private val positiveListeners = mutableListOf<DialogCallback>()
     private val negativeListeners = mutableListOf<DialogCallback>()
     private val neutralListeners = mutableListOf<DialogCallback>()
+
+    private var currentAnimator: Animator? = null
 
     init {
         container.dialog = this
@@ -296,6 +303,18 @@ class MaterialDialog internal constructor(
         if (isDismissed) return@apply
         viewGroup.addView(container)
         addedInContainer = true
+
+        OneShotPreDrawListener.add(container) {
+            if (isDismissed) return@add
+            val animator = AnimatorSet()
+            animator.play(
+                ObjectAnimator.ofFloat(container, View.ALPHA, 0f, 1f)
+                    .setDuration(150)
+            )
+
+            currentAnimator = animator
+            animator.start()
+        }
     }
 
     fun dismiss() {
@@ -304,7 +323,29 @@ class MaterialDialog internal constructor(
         dismissListeners.invokeAll(this)
         (context as? ComponentActivity)?.removeOnBackPressedCallback(onBackPressedCallback)
         hideKeyboard()
-        (container.parent as? ViewGroup)?.removeView(container)
+
+        if (addedInContainer) {
+            currentAnimator?.cancel()
+            val animator = AnimatorSet()
+            animator.play(
+                ObjectAnimator.ofFloat(container, View.ALPHA, view.alpha, 0f)
+                    .setDuration(150)
+            )
+
+            animator.addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationCancel(animation: Animator?) {
+                    super.onAnimationCancel(animation)
+                    (container.parent as? ViewGroup)?.removeView(container)
+                }
+
+                override fun onAnimationEnd(animation: Animator?) {
+                    super.onAnimationEnd(animation)
+                    (container.parent as? ViewGroup)?.removeView(container)
+                }
+            })
+
+            animator.start()
+        }
     }
 
     fun cancel() {
