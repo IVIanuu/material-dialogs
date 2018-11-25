@@ -68,7 +68,6 @@ internal class DialogLayout @JvmOverloads constructor(
         scrolledDown: Boolean,
         atBottom: Boolean
     ) {
-        Log.d("testt", "invalidate dividers scrolled down $scrolledDown, atbottom $atBottom")
         titleLayout.drawDivider = scrolledDown
         buttonsLayout.drawDivider = atBottom
     }
